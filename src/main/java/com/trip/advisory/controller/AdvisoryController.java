@@ -16,7 +16,7 @@ public class AdvisoryController {
 
     @GetMapping("/advise")
     public InfoDTO advise(@Validated SearchCriteriaDTO searchCriteriaDto) {
-        System.out.println(searchCriteriaDto.getCity());
+        logger.log(searchCriteriaDto.getCity());
 
 
         return advisoryService.getAdvise(searchCriteriaDto);

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
 
 @Entity

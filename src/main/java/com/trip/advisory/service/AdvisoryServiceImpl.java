@@ -47,11 +47,10 @@ public class AdvisoryServiceImpl implements AdvisoryService {
                 searchCriteriaDTO.getEndDate(),
                 searchCriteriaDTO.getHotel());
 
-        Map<String, BigDecimal> temperatureByDay = new HashMap<String, BigDecimal>();
+        Map<String,List<BigDecimal>> temperatureByDay = new HashMap<>();
 
         // if not info retrieved from database, then retrieve from external APIs and store the results in the database
         if(infoEntity == null) {
-            // TODO: call weather API in order to obtain weather information based on clients' search criteria
             // https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&start_date=2022-10-30&end_date=2022-11-06&daily=temperature_2m_max&timezone=GMT
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -74,9 +73,6 @@ public class AdvisoryServiceImpl implements AdvisoryService {
                 temperatureByDay.put((String) dateList.get(i), (BigDecimal) temperatureList.get(i));
             }
 
-            // TODO: call review API in order to obtain reviews of other clients for the location mentioned in the clients' search criteria
-            // TODO: store both weather info and reviews along with clients' search criteria in database
-
             infoEntity = InfoEntity.builder()
                     .city(searchCriteriaDTO.getCity())
                     .lat(searchCriteriaDTO.getLat())
@@ -88,15 +84,13 @@ public class AdvisoryServiceImpl implements AdvisoryService {
         }
 
         // prepare info data to send to client
-        InfoDTO infoDto = InfoDTO.builder()
+        InfoDTO return = InfoDTO.builder()
                 .city(infoEntity.getCity())
                 .startDate(infoEntity.getStartDate())
                 .endDate(infoEntity.getEndDate())
                 .hotel(infoEntity.getHotel())
                 .temperatureByDay(temperatureByDay)
                 .build();
-
-        return infoDto;
     }
 
 }
